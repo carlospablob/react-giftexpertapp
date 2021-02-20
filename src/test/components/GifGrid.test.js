@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import { shallow } from 'enzyme';
 import { GiftGrid } from '../../components/GiftGrid';
 import { useFetchGifs } from '../../hooks/useFetchGifs';
@@ -27,17 +28,24 @@ describe('Pruebas en <GifGrid />', () => {
                 id: 1,
                 url: 'https://localhost/cualquier/cosa.jpg',
                 title: 'Test'
+            },
+            {
+                id: 2,
+                url: 'https://localhost/cualquier/cosa.jpg',
+                title: 'Test'
             }
-        ]
+        ];
 
         useFetchGifs.mockReturnValue({
-            data: [],
-            loading: true
+            data: gifs,
+            loading: false
         });
 
         const wrapper = shallow(<GiftGrid category={category} />);
 
-        expect(wrapper).toMatchSnapshot();
+        expect(wrapper.find('p').exists()).toBe(false);
+
+        expect(wrapper.find('GifGridItem').length).toBe(gifs.length)
     })
     
 
